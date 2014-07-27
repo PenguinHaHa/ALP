@@ -5,5 +5,7 @@
 #define TEST_CASE_H
 
 void standardio(void);
+void environment(void);
+void process(void);
 
 #endif

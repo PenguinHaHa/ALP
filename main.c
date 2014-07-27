@@ -1,6 +1,14 @@
-#include<stdio.h>
-#include<getopt.h>
-#include<string.h>
+//
+// By Penguin, 2014.7
+//
+
+#include <stdio.h>
+#include <getopt.h>
+#include <string.h>
+
+#include "testcase.h"
+
+void choose_testcase(char* opt_arg);
 
 const char* const short_options = "hc:";
 const struct option long_options[] = {
@@ -19,6 +27,7 @@ void print_usage(void)
 int main(int argc, char *argv[])
 {
   int option;
+  char* opt_arg = NULL;
 
   do {
     option = getopt_long(argc, argv, short_options, long_options, NULL);
@@ -26,9 +35,12 @@ int main(int argc, char *argv[])
     {
       case 'h':
         print_usage();
+        break;
 
       case 'c':
         printf("test case %s\n", optarg);
+        opt_arg = optarg;
+        choose_testcase(opt_arg);
         break;
 
       case -1:
@@ -44,11 +56,22 @@ int main(int argc, char *argv[])
   return 0;
 }
 
-void choose_testcase(char *optarg)
+void choose_testcase(char* opt_arg)
 {
-  if(strcmp(optarg, "standardio"))
+  if(!strcmp(optarg, "standardio"))
   {
     printf("Run Standard IO test case\n");
+    standardio();
+  }
+  else if(!strcmp(optarg, "environment"))
+  {
+    printf("Run Environment variable test case\n");
+    environment();
+  }
+  else if(!strcmp(optarg, "process"))
+  {
+    printf("Run Process test case\n");
+    process();
   }
   else
   {

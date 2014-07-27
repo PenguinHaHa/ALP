@@ -1,3 +1,7 @@
+//
+// By Penguin, 2014.7
+//
+
 #include <stdio.h>
 
 extern char** environ;
