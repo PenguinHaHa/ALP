@@ -6,16 +6,17 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sched.h>
+#include <signal.h>
 
 char* arg_list[] = {
-  "ls",
-  "-l",
+  "./sigaction",
   NULL
 };
  
 void process(void)
 {
   pid_t child_pid;
+  int child_status;
 
   printf("Current pid %d\n", getpid());
   printf("Parent pid %d\n", getppid());
@@ -27,14 +28,22 @@ void process(void)
   {
     printf("CHILD, Current pid %d\n", getpid());
     printf("CHILD, Current process's prority %d\n", sched_getscheduler(0));
-    execvp("ls", arg_list);
+    execv("./sigaction", arg_list);
     //execvp only return if error occur
-    fprintf(stderr, "run ls failed\n");
+    printf("run sigaction failed\n");
+    fprintf(stderr, "run sigaction failed\n");
     abort();
   }
   else
   {
     printf("This is parent process, return child pid %d\n", child_pid);
+    sleep(1);
+    kill(child_pid, SIGUSR1);
+    kill(child_pid, SIGUSR2);
+    sleep(1);
+    kill(child_pid, SIGUSR2);
+    wait(&child_status);
+    printf("child status %d\n", child_status);
   }
 }
 
