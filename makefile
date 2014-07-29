@@ -1,4 +1,4 @@
-all: alp sigaction
+all: alp sigaction zombie
 
 alp: main.o standardio.o environment.o process.o
 	gcc $(CFLAGS) -o alp main.o standardio.o environment.o process.o
@@ -21,6 +21,12 @@ sigaction: sigaction.o
 sigaction.o: sigaction.c
 	gcc $(CFLAGS) -c sigaction.c
 
+zombie: zombieprocess.o
+	gcc $(CFLAGS) -o zombie zombieprocess.o
+
+zombieprocess.o: zombieprocess.c
+	gcc $(CFLAGS) -c zombieprocess.c
+
 clean:
-	rm -f *.o alp sigaction
+	rm -f *.o alp sigaction zombie
 

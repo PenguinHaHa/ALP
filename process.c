@@ -12,11 +12,25 @@ char* arg_list[] = {
   "./sigaction",
   NULL
 };
- 
+
+sig_atomic_t child_status;
+sig_atomic_t handler_in = 0;
+
+void child_handler(int signal_number)
+{
+  int status;
+  handler_in = 1;
+  wait(&status);
+  child_status = status;
+}
+
 void process(void)
 {
   pid_t child_pid;
-  int child_status;
+  struct sigaction sa;
+
+  sa.sa_handler = child_handler;
+  sigaction(SIGCHLD, &sa, NULL);
 
   printf("Current pid %d\n", getpid());
   printf("Parent pid %d\n", getppid());
@@ -42,8 +56,9 @@ void process(void)
     kill(child_pid, SIGUSR2);
     sleep(1);
     kill(child_pid, SIGUSR2);
-    wait(&child_status);
-    printf("child status %d\n", child_status);
+
+    sleep(18);
+    printf("child status %d, handler_in %d\n", child_status, handler_in);
   }
 }
 
