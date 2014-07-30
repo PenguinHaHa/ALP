@@ -4,6 +4,8 @@
 
 #include <stdio.h>
 
+#include "testcase.h"
+
 extern char** environ;
 
 void environment(void)

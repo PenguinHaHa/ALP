@@ -8,6 +8,8 @@
 #include <sched.h>
 #include <signal.h>
 
+#include "testcase.h"
+
 char* arg_list[] = {
   "./sigaction",
   NULL

@@ -7,5 +7,6 @@
 void standardio(void);
 void environment(void);
 void process(void);
+void thread(void);
 
 #endif

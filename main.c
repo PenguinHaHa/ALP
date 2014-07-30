@@ -73,6 +73,11 @@ void choose_testcase(char* opt_arg)
     printf("Run Process test case\n");
     process();
   }
+  else if(!strcmp(optarg, "thread"))
+  {
+    printf("Run thread test case\n");
+    thread();
+  }
   else
   {
     printf("Undefined test case %s\n", optarg);
