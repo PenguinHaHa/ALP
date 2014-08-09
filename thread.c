@@ -12,9 +12,12 @@ int num;
 void *thread_func(void *threadnum)
 {
   int i;
+  pthread_t tid;
+
   for(i = 0; i < 5; i++)
   {
-    printf("This is thread %d\n", *(int *)threadnum);
+    tid = pthread_self();
+    printf("This is thread %d, thread id %lu\n", *(int *)threadnum, tid);
     sleep(1);
   }
 }
