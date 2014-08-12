@@ -23,13 +23,14 @@ int server(int client_socket)
 
     /* Read the text itself, and print it */
     read(client_socket, text, length);
-    printf("%s\n", text);
+    printf("length %d, string %s\n", length, text);
 
-    /* Free the buffer */
-    free(text);
     /* If the client sent the message "quit", we're all done */
     if(!strcmp(text, "quit"))
       return 1;
+    
+    /* Free the buffer */
+    free(text);
   }
 }
 

@@ -10,6 +10,7 @@ void write_text(int socket_fd, const char* text)
   /* Write the number of bytes in the string, including NULL-termination */
   int length = strlen(text) + 1;
   write(socket_fd, &length, sizeof(length));
+  printf("Length %d string %s\n", length, text);
   /* Write the string */
   write(socket_fd, text, length);
 }
