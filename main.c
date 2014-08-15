@@ -10,6 +10,7 @@
 
 void choose_testcase(char* opt_arg);
 
+// : after the short option means this option needs parameters
 const char* const short_options = "hc:";
 const struct option long_options[] = {
   {"help", 0, NULL, 'h'},

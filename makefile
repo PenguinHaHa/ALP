@@ -1,4 +1,4 @@
-all: alp sigaction zombie sharedmemory pipe socket_server socket_client
+all: alp sigaction zombie sharedmemory pipe socket_server socket_client racecondition
 
 alp: main.o standardio.o environment.o process.o thread.o
 	gcc $(CFLAGS) -o alp main.o standardio.o environment.o process.o thread.o -lpthread
@@ -54,6 +54,11 @@ socket_server: socket_server.o
 socket_server.o: socket_server.c
 	gcc $(CFLAGS) -c socket_server.c
 
+racecondition: racecondition.o
+	gcc $(CFLAGS) -o racecondition racecondition.o -lpthread
+
+racecondition.o: racecondition.c
+	gcc $(CFLAGS) -c racecondition.c
 clean:
-	rm -f *.o alp sigaction zombie sharedmemory pipe socket_client socket_server
+	rm -f *.o alp sigaction zombie sharedmemory pipe socket_client socket_server racecondition
 
