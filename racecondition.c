@@ -24,6 +24,7 @@ void* sem_thread_fun(void* arg);
 void lock_case(void);
 void* lock_thread_fun(void *arg);
 void condition_case(void);
+void* cond_thread_fun(void *arg);
 
 void print_usage(void)
 {
@@ -179,5 +180,56 @@ void* lock_thread_fun(void *arg)
 
 void condition_case(void)
 {
+  int ret;
+  struct _cond {
+    int flag;
+    pthread_mutex_t mutex;
+    pthread_cond_t condition;
+  } cond;
+
   printf("This is condition case\n");
+
+  // init
+  pthread_mutex_init(&cond.mutex, NULL);
+  pthread_cond_init(&cond.condition, NULL);
+  cond.flag = 0;
+
+  pthread_t cond_thread;
+  ret = pthread_create(&cond_thread, NULL, cond_thread_fun, &cond);
+  if(ret)
+  {
+    printf("create cond thread failed\n");
+    exit(EXIT_FAILURE);
+  }
+
+  sleep(5);
+
+  pthread_mutex_lock(&cond.mutex);
+  printf("locked in main thread\n");
+  cond.flag = 1;
+  pthread_cond_signal(&cond.condition);
+  pthread_mutex_unlock(&cond.mutex);
+  printf("unlocked in main thread\n");
+
+  pthread_join(cond_thread, NULL);
+}
+
+void *cond_thread_fun(void *arg)
+{
+  struct _cond {
+    int flag;
+    pthread_mutex_t mutex;
+    pthread_cond_t condition;
+  } *cond;
+  cond = arg;
+
+  pthread_mutex_lock(&cond->mutex);
+  printf("locked in cond thread\n");
+  while(cond->flag == 0)
+  {
+    printf("wait for condition ready\n");
+    pthread_cond_wait(&cond->condition, &cond->mutex);
+  }
+  pthread_mutex_unlock(&cond->mutex);
+  printf("unlocked in cond thread\n");
 }
